@@ -1,0 +1,30 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Logro {
+  id              Int             @id @default(autoincrement())
+  nombre          String          @db.VarChar(255)
+  descripcion     String?
+  puntosOtorgados Int
+  tipo            String          @db.VarChar(100) 
+
+  usuarios        UsuarioLogro[]
+}
+
+model UsuarioLogro {
+  idUsuario      Int              
+  idLogro        Int
+  fechaObtenido  DateTime         @default(now())
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+
+  logro          Logro            @relation(fields: [idLogro], references: [id], onDelete: Cascade)
+
+  @@id([idUsuario, idLogro])
+}

@@ -1,0 +1,22 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = __importDefault(require("express"));
+const client_1 = require("@prisma/client");
+const LogroPrismaRepository_1 = require("../../repositories/LogroPrismaRepository");
+const UsuarioLogroPrismaRepository_1 = require("../../repositories/UsuarioLogroPrismaRepository");
+const DesbloquearLogro_1 = require("../../../application/useCases/DesbloquearLogro");
+const ListarLogrosDeUsuario_1 = require("../../../application/useCases/ListarLogrosDeUsuario");
+const GamificacionController_1 = require("./GamificacionController");
+const prisma = new client_1.PrismaClient();
+const logroRepo = new LogroPrismaRepository_1.LogroPrismaRepository(prisma);
+const usuarioLogroRepo = new UsuarioLogroPrismaRepository_1.UsuarioLogroPrismaRepository(prisma);
+const desbloquearUseCase = new DesbloquearLogro_1.DesbloquearLogro(logroRepo, usuarioLogroRepo);
+const listarUseCase = new ListarLogrosDeUsuario_1.ListarLogrosDeUsuario(usuarioLogroRepo);
+const controller = new GamificacionController_1.GamificacionController(desbloquearUseCase, listarUseCase);
+const router = express_1.default.Router();
+router.post('/logros/desbloquear', (req, res) => controller.desbloquear(req, res));
+router.get('/logros/:idUsuario', (req, res) => controller.listarPorUsuario(req, res));
+exports.default = router;
