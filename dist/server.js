@@ -17,8 +17,9 @@ dotenv_1.default.config();
 const express_1 = __importDefault(require("express"));
 const morgan_1 = __importDefault(require("morgan"));
 const cors_1 = __importDefault(require("cors"));
-const client_1 = __importDefault(require("../src/gamificacion/infraestructure/prisma/client"));
-const GamificacionRouter_1 = __importDefault(require("../src/gamificacion/infraestructure/adapters/controllers/GamificacionRouter"));
+const client_1 = __importDefault(require("./gamificacion/infraestructure/prisma/client"));
+const GamificacionRouter_1 = __importDefault(require("./gamificacion/infraestructure/adapters/controllers/GamificacionRouter"));
+const jwtMiddleware_1 = require("./gamificacion/infraestructure/http/middleware/jwtMiddleware");
 // Inicializar Express
 const app = (0, express_1.default)();
 const port = process.env.PORT || 3000;
@@ -27,7 +28,7 @@ app.use(express_1.default.json());
 app.use((0, cors_1.default)());
 app.use((0, morgan_1.default)('dev'));
 // Rutas
-app.use('/api/gamificacion', GamificacionRouter_1.default);
+app.use('/api/gamificacion', jwtMiddleware_1.jwtMiddleware, GamificacionRouter_1.default);
 // Ruta de salud
 app.get('/health', (req, res) => {
     res.status(200).json({ status: 'OK' });

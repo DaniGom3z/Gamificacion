@@ -15,36 +15,42 @@ class GamificacionController {
         this.desbloquearLogro = desbloquearLogro;
         this.listarLogrosDeUsuario = listarLogrosDeUsuario;
     }
+    // POST /api/gamificacion/logros/desbloquear
     desbloquear(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
+            var _a;
             try {
-                const idUsuario = Number(req.body.idUsuario);
-                const idLogro = Number(req.body.idLogro);
-                if (isNaN(idUsuario) || isNaN(idLogro)) {
-                    res.status(400).json({ error: 'idUsuario y idLogro deben ser numéricos' });
+                const idUsuario = Number((_a = req.user) === null || _a === void 0 ? void 0 : _a.id); // ← viene del JWT
+                const idLogro = Number(req.body.idLogro); // ← solo recibimos idLogro
+                if (!idUsuario || isNaN(idLogro)) {
+                    res
+                        .status(400)
+                        .json({ error: "Token sin id o idLogro inválido" });
                     return;
                 }
                 yield this.desbloquearLogro.execute(idUsuario, idLogro);
-                res.status(201).json({ message: 'Logro desbloqueado con éxito' });
+                res.status(201).json({ message: "Logro desbloqueado con éxito" });
             }
             catch (error) {
                 res.status(400).json({ error: error.message });
             }
         });
     }
+    // GET /api/gamificacion/logros
     listarPorUsuario(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
+            var _a;
             try {
-                const idUsuario = Number(req.params.idUsuario);
-                if (isNaN(idUsuario)) {
-                    res.status(400).json({ error: 'idUsuario debe ser numérico' });
+                const idUsuario = Number((_a = req.user) === null || _a === void 0 ? void 0 : _a.id);
+                if (!idUsuario) {
+                    res.status(400).json({ error: "Token sin idUsuario" });
                     return;
                 }
                 const logros = yield this.listarLogrosDeUsuario.execute(idUsuario);
                 res.status(200).json(logros);
             }
             catch (error) {
-                res.status(500).json({ error: 'Error al obtener logros del usuario' });
+                res.status(500).json({ error: "Error al obtener logros del usuario" });
             }
         });
     }

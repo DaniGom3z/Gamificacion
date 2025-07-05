@@ -3,8 +3,9 @@ dotenv.config();
 import express, { Request, Response, NextFunction } from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
-import  prisma  from '../src/gamificacion/infraestructure/prisma/client';
-import gamificacionRouter from '../src/gamificacion/infraestructure/adapters/controllers/GamificacionRouter';
+import  prisma  from './gamificacion/infraestructure/prisma/client';
+import gamificacionRouter from './gamificacion/infraestructure/adapters/controllers/GamificacionRouter';
+import { jwtMiddleware } from './gamificacion/infraestructure/http/middleware/jwtMiddleware';
 
 // Inicializar Express
 const app = express();
@@ -16,7 +17,7 @@ app.use(cors());
 app.use(morgan('dev'));
 
 // Rutas
-app.use('/api/gamificacion', gamificacionRouter);
+app.use('/api/gamificacion', jwtMiddleware,gamificacionRouter);
 
 // Ruta de salud
 app.get('/health', (req: Request, res: Response) => {

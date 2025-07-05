@@ -28,3 +28,14 @@ model UsuarioLogro {
 
   @@id([idUsuario, idLogro])
 }
+
+
+model Rango {
+  id               Int      @id @default(autoincrement())
+  nombre           String
+  descripcion      String
+  puntuacionMinima Int
+  orden            Int      @unique
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
