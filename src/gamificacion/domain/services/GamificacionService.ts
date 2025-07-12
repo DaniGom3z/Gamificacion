@@ -1,4 +1,5 @@
 import { UsuarioLogro } from '../entities/UsuarioLogro';
+import { LogroId } from '../valueObjects/LogroId';
 
 export class GamificacionService {
   /**
@@ -7,8 +8,8 @@ export class GamificacionService {
    * @param idLogro El ID del logro a verificar
    * @returns true si el usuario ya tiene el logro, false en caso contrario
    */
-  static yaTieneLogro(usuarioLogros: UsuarioLogro[], idLogro: number): boolean {
-    return usuarioLogros.some(ul => ul.idLogro === idLogro);
+  static yaTieneLogro(usuarioLogros: UsuarioLogro[], idLogro: LogroId): boolean {
+    return usuarioLogros.some(ul => ul.idLogro.getValue() === idLogro.getValue());
   }
 
   /**

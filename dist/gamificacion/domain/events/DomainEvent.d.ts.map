@@ -1,0 +1,1 @@
+{"version":3,"file":"DomainEvent.d.ts","sourceRoot":"","sources":["../../../../src/gamificacion/domain/events/DomainEvent.ts"],"names":[],"mappings":"AAAA,8BAAsB,WAAW;IAC/B,SAAgB,UAAU,EAAE,IAAI,CAAC;IACjC,SAAgB,OAAO,EAAE,MAAM,CAAC;;IAOhC,QAAQ,CAAC,YAAY,IAAI,MAAM;IAE/B,OAAO,CAAC,eAAe;CAGxB"}

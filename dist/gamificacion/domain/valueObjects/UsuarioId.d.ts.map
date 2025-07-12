@@ -1,0 +1,1 @@
+{"version":3,"file":"UsuarioId.d.ts","sourceRoot":"","sources":["../../../../src/gamificacion/domain/valueObjects/UsuarioId.ts"],"names":[],"mappings":"AAAA,qBAAa,SAAS;IACA,OAAO,CAAC,QAAQ,CAAC,KAAK;IAA1C,OAAO;IAEP,MAAM,CAAC,MAAM,CAAC,KAAK,EAAE,MAAM,GAAG,SAAS;IAOvC,QAAQ,IAAI,MAAM;IAIlB,MAAM,CAAC,KAAK,EAAE,SAAS,GAAG,OAAO;IAIjC,QAAQ,IAAI,MAAM;CAGnB"}

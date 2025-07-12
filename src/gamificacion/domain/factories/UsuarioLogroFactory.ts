@@ -6,20 +6,19 @@ export class UsuarioLogroFactory {
     idUsuario: number,
     idLogro: number
   ): UsuarioLogro {
-    return new UsuarioLogro(
+    return UsuarioLogro.create(
       idUsuario,
       idLogro,
       new Date() 
     );
   }
 
-
   static reconstruir(
     idUsuario: number,
     idLogro: number,
     fechaObtenido: Date
   ): UsuarioLogro {
-    return new UsuarioLogro(
+    return UsuarioLogro.create(
       idUsuario,
       idLogro,
       fechaObtenido

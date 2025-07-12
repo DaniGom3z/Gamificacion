@@ -8,9 +8,8 @@ export class LogroFactory {
     puntosOtorgados: number,
     tipo: string
   ): Logro {
-    return new Logro(0, nombre, descripcion, puntosOtorgados, tipo);
+    return Logro.create(0, nombre, descripcion, puntosOtorgados, tipo);
   }
-
 
   static reconstruir(
     id: number,
@@ -19,6 +18,6 @@ export class LogroFactory {
     puntosOtorgados: number,
     tipo: string
   ): Logro {
-    return new Logro(id, nombre, descripcion, puntosOtorgados, tipo);
+    return Logro.create(id, nombre, descripcion, puntosOtorgados, tipo);
   }
 }

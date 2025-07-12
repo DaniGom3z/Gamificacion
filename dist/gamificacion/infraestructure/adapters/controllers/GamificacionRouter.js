@@ -4,20 +4,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const client_1 = __importDefault(require("../../prisma/client"));
-const LogroPrismaRepository_1 = require("../../repositories/LogroPrismaRepository");
-const UsuarioLogroPrismaRepository_1 = require("../../repositories/UsuarioLogroPrismaRepository");
-const DesbloquearLogro_1 = require("../../../application/useCases/DesbloquearLogro");
-const ListarLogrosDeUsuario_1 = require("../../../application/useCases/ListarLogrosDeUsuario");
-const GamificacionController_1 = require("./GamificacionController");
-const logroRepo = new LogroPrismaRepository_1.LogroPrismaRepository(client_1.default);
-const usuarioLogroRepo = new UsuarioLogroPrismaRepository_1.UsuarioLogroPrismaRepository(client_1.default);
-const desbloquearUseCase = new DesbloquearLogro_1.DesbloquearLogro(logroRepo, usuarioLogroRepo);
-const listarUseCase = new ListarLogrosDeUsuario_1.ListarLogrosDeUsuario(usuarioLogroRepo);
-const controller = new GamificacionController_1.GamificacionController(desbloquearUseCase, listarUseCase);
+const DependencyInjection_1 = require("../../config/DependencyInjection");
 const router = express_1.default.Router();
-// ← protege la ruta con JWT
+// Obtener el controlador desde la inyección de dependencias
+const controller = DependencyInjection_1.di.getGamificacionController();
+// POST /api/gamificacion/logros/desbloquear
 router.post('/logros/desbloquear', (req, res) => controller.desbloquear(req, res));
-// ← ahora sin :idUsuario, se usará req.user.id
+// GET /api/gamificacion/logros
 router.get('/logros', (req, res) => controller.listarPorUsuario(req, res));
 exports.default = router;
+//# sourceMappingURL=GamificacionRouter.js.map

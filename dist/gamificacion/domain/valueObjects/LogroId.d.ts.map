@@ -1,0 +1,1 @@
+{"version":3,"file":"LogroId.d.ts","sourceRoot":"","sources":["../../../../src/gamificacion/domain/valueObjects/LogroId.ts"],"names":[],"mappings":"AAAA,qBAAa,OAAO;IACE,OAAO,CAAC,QAAQ,CAAC,KAAK;IAA1C,OAAO;IAEP,MAAM,CAAC,MAAM,CAAC,KAAK,EAAE,MAAM,GAAG,OAAO;IAOrC,QAAQ,IAAI,MAAM;IAIlB,MAAM,CAAC,KAAK,EAAE,OAAO,GAAG,OAAO;IAI/B,QAAQ,IAAI,MAAM;CAGnB"}

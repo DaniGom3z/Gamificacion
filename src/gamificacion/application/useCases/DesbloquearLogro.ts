@@ -1,7 +1,16 @@
 import { LogroRepository } from '../../domain/repositories/LogroRepository';
-import { UsuarioLogroRepository } from '../../domain/repositories/UsuarioLogroRepository'; 
-import { UsuarioLogroFactory } from '../../domain/factories/UsuarioLogroFactory';
+import { UsuarioLogroRepository } from '../../domain/repositories/UsuarioLogroRepository';
+import { UsuarioAggregate } from '../../domain/aggregates/UsuarioAggregate';
+import { UsuarioId } from '../../domain/valueObjects/UsuarioId';
+import { LogroId } from '../../domain/valueObjects/LogroId';
 import { GamificacionService } from '../../domain/services/GamificacionService';
+
+export interface DesbloquearLogroResult {
+  success: boolean;
+  puntosOtorgados: number;
+  puntosTotales: number;
+  domainEvents: any[];
+}
 
 export class DesbloquearLogro {
   constructor(
@@ -9,31 +18,42 @@ export class DesbloquearLogro {
     private readonly usuarioLogroRepo: UsuarioLogroRepository
   ) {}
 
-  async execute(idUsuario: number, idLogro: number): Promise<void> {
+  async execute(usuarioId: number, logroId: number): Promise<DesbloquearLogroResult> {
+    const usuarioIdVO = UsuarioId.create(usuarioId);
+    const logroIdVO = LogroId.create(logroId);
+
     // Verificar que el logro existe
-    const logro = await this.logroRepo.findById(idLogro);
+    const logro = await this.logroRepo.findById(logroIdVO);
     if (!logro) {
-      throw new Error(`El logro con id ${idLogro} no existe`);
+      throw new Error(`El logro con id ${logroId} no existe`);
     }
 
-    // Verificar si ya tiene el logro
-    const yaTiene = await this.usuarioLogroRepo.exists(idUsuario, idLogro);
-    if (yaTiene) {
-      throw new Error(`El usuario ${idUsuario} ya tiene el logro ${idLogro}`);
+    // Obtener o crear el aggregate del usuario
+    let usuarioAggregate = await this.usuarioLogroRepo.findUsuarioAggregate(usuarioIdVO);
+    if (!usuarioAggregate) {
+      usuarioAggregate = UsuarioAggregate.create(usuarioIdVO);
     }
 
-    // Verificar reglas del negocio (opcional: aquí puedes añadir lógica adicional)
+    // Verificar reglas del negocio
     if (!GamificacionService.esLogroElegible(logro.tipo)) {
       throw new Error(`El logro tipo ${logro.tipo} no es elegible para ser otorgado`);
     }
 
-    // Crear la entidad
-    const usuarioLogro = UsuarioLogroFactory.crearNuevo(idUsuario, idLogro);
+    // Desbloquear el logro en el aggregate
+    usuarioAggregate.desbloquearLogro(logroIdVO, logro.puntosOtorgados);
 
-    // Guardar en el repositorio
-    await this.usuarioLogroRepo.save(usuarioLogro);
+    // Guardar el aggregate
+    await this.usuarioLogroRepo.saveUsuarioAggregate(usuarioAggregate);
 
-    // Aquí podrías publicar un evento: LogroDesbloqueadoEvent
-    // Por ahora lo dejamos como parte del dominio
+    // Obtener eventos de dominio
+    const domainEvents = [...usuarioAggregate.domainEvents];
+    usuarioAggregate.clearDomainEvents();
+
+    return {
+      success: true,
+      puntosOtorgados: logro.puntosOtorgados.getValue(),
+      puntosTotales: usuarioAggregate.puntos.getValue(),
+      domainEvents
+    };
   }
 }

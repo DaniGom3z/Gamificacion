@@ -1,0 +1,1 @@
+{"version":3,"file":"EventHandler.d.ts","sourceRoot":"","sources":["../../../../src/gamificacion/application/events/EventHandler.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,WAAW,EAAE,MAAM,iCAAiC,CAAC;AAE9D,MAAM,WAAW,YAAY;IAC3B,MAAM,CAAC,KAAK,EAAE,WAAW,GAAG,OAAO,CAAC,IAAI,CAAC,CAAC;CAC3C"}

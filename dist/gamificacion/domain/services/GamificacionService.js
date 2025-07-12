@@ -9,7 +9,7 @@ class GamificacionService {
      * @returns true si el usuario ya tiene el logro, false en caso contrario
      */
     static yaTieneLogro(usuarioLogros, idLogro) {
-        return usuarioLogros.some(ul => ul.idLogro === idLogro);
+        return usuarioLogros.some(ul => ul.idLogro.getValue() === idLogro.getValue());
     }
     /**
      * Valida si un logro es elegible para ser otorgado según las reglas del negocio.
@@ -23,3 +23,4 @@ class GamificacionService {
     }
 }
 exports.GamificacionService = GamificacionService;
+//# sourceMappingURL=GamificacionService.js.map

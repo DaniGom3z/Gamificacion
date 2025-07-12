@@ -1,14 +1,30 @@
+import { UsuarioId } from '../valueObjects/UsuarioId';
+import { LogroId } from '../valueObjects/LogroId';
+
 export class UsuarioLogro {
   constructor(
-    public readonly idUsuario: number,
-    public readonly idLogro: number,
+    public readonly idUsuario: UsuarioId,
+    public readonly idLogro: LogroId,
     public readonly fechaObtenido: Date,
-  ) {
-    if (!idUsuario || idUsuario <= 0) {
-      throw new Error('El idUsuario debe ser un número válido');
-    }
-    if (!idLogro || idLogro <= 0) {
-      throw new Error('El idLogro debe ser un número válido');
-    }
+  ) {}
+
+  static create(
+    idUsuario: number,
+    idLogro: number,
+    fechaObtenido: Date = new Date()
+  ): UsuarioLogro {
+    return new UsuarioLogro(
+      UsuarioId.create(idUsuario),
+      LogroId.create(idLogro),
+      fechaObtenido
+    );
+  }
+
+  esDelUsuario(usuarioId: UsuarioId): boolean {
+    return this.idUsuario.equals(usuarioId);
+  }
+
+  esDelLogro(logroId: LogroId): boolean {
+    return this.idLogro.equals(logroId);
   }
 }

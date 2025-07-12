@@ -14,9 +14,11 @@ function jwtMiddleware(req, res, next) {
     const token = authHeader.split(" ")[1];
     const secret = process.env.JWT_SECRET;
     if (!secret) {
-        throw new Error("JWT_SECRET no definido en variables de entorno");
+        res.status(500).json({ error: "JWT_SECRET no definido en variables de entorno" });
+        return;
     }
     try {
+        // @ts-ignore
         const payload = jsonwebtoken_1.default.verify(token, secret);
         req.user = { id: Number(payload.id) };
         next();
@@ -25,3 +27,4 @@ function jwtMiddleware(req, res, next) {
         res.status(401).json({ error: "Token inválido" });
     }
 }
+//# sourceMappingURL=jwtMiddleware.js.map

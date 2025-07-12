@@ -1,20 +1,37 @@
 {
   "name": "gamificacion",
   "version": "1.0.0",
-  "main": "index.js",
+  "description": "Sistema de gamificación implementado con Domain-Driven Design (DDD)",
+  "main": "dist/server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "dev": "ts-node src/server.ts",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:studio": "prisma studio",
+    "ddd:docs": "echo \"Documentación DDD disponible en README_DDD.md\"",
+    "ddd:structure": "echo \"Estructura DDD documentada en src/gamificacion/domain/config/DDDConfig.ts\""
   },
-  "keywords": [],
+  "keywords": [
+    "ddd",
+    "domain-driven-design",
+    "gamification",
+    "typescript",
+    "express",
+    "prisma",
+    "clean-architecture"
+  ],
   "author": "",
   "license": "ISC",
-  "description": "",
   "devDependencies": {
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.3",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/morgan": "^1.9.10",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "ts-node": "^10.9.1"
   },
   "dependencies": {
     "@prisma/client": "^6.10.1",

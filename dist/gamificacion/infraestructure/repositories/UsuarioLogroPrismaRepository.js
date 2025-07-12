@@ -1,13 +1,4 @@
 "use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UsuarioLogroPrismaRepository = void 0;
 const UsuarioLogroFactory_1 = require("../../domain/factories/UsuarioLogroFactory");
@@ -15,35 +6,40 @@ class UsuarioLogroPrismaRepository {
     constructor(prisma) {
         this.prisma = prisma;
     }
-    save(usuarioLogro) {
-        return __awaiter(this, void 0, void 0, function* () {
-            yield this.prisma.usuarioLogro.create({
-                data: {
-                    idUsuario: usuarioLogro.idUsuario,
-                    idLogro: usuarioLogro.idLogro,
-                    fechaObtenido: usuarioLogro.fechaObtenido,
-                },
-            });
+    async save(usuarioLogro) {
+        await this.prisma.usuarioLogro.create({
+            data: {
+                idUsuario: usuarioLogro.idUsuario.getValue(),
+                idLogro: usuarioLogro.idLogro.getValue(),
+                fechaObtenido: usuarioLogro.fechaObtenido,
+            },
         });
     }
-    findByUsuario(idUsuario) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const dbResults = yield this.prisma.usuarioLogro.findMany({
-                where: { idUsuario },
-            });
-            return dbResults.map((ul) => UsuarioLogroFactory_1.UsuarioLogroFactory.reconstruir(ul.idUsuario, ul.idLogro, ul.fechaObtenido));
+    async findByUsuario(idUsuario) {
+        const dbResults = await this.prisma.usuarioLogro.findMany({
+            where: { idUsuario: idUsuario.getValue() },
         });
+        return dbResults.map((ul) => UsuarioLogroFactory_1.UsuarioLogroFactory.reconstruir(ul.idUsuario, ul.idLogro, ul.fechaObtenido));
     }
-    exists(idUsuario, idLogro) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const count = yield this.prisma.usuarioLogro.count({
-                where: {
-                    idUsuario,
-                    idLogro,
-                },
-            });
-            return count > 0;
+    async exists(idUsuario, idLogro) {
+        const count = await this.prisma.usuarioLogro.count({
+            where: {
+                idUsuario: idUsuario.getValue(),
+                idLogro: idLogro.getValue(),
+            },
         });
+        return count > 0;
+    }
+    async findUsuarioAggregate(_idUsuario) {
+        // Por ahora retornamos null, en una implementación completa
+        // aquí se cargarían los datos del usuario desde la base de datos
+        return null;
+    }
+    async saveUsuarioAggregate(usuarioAggregate) {
+        // Por ahora no hacemos nada, en una implementación completa
+        // aquí se guardarían los datos del aggregate en la base de datos
+        console.log('Guardando aggregate del usuario:', usuarioAggregate.id.getValue());
     }
 }
 exports.UsuarioLogroPrismaRepository = UsuarioLogroPrismaRepository;
+//# sourceMappingURL=UsuarioLogroPrismaRepository.js.map
