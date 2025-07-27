@@ -16,16 +16,30 @@ export class UsuarioLogroFactory {
   }
 
   static reconstruir(
-    idUsuario: number,
-    idLogro: number,
-    idRango: number,
-    fechaObtenido: Date
-  ): UsuarioLogro {
-    return UsuarioLogro.create(
-      idUsuario,
-      idLogro,
-      idRango,
-      fechaObtenido
-    );
+  idUsuario: number,
+  idLogro: number,
+  idRango: number,
+  fechaObtenido: Date,
+  logro?: {
+    id: number;
+    nombre: string;
+    descripcion: string | null;
+    puntosOtorgados: number;
+    tipo: string;
   }
+): UsuarioLogro {
+  const usuarioLogro = UsuarioLogro.create(
+    idUsuario,
+    idLogro,
+    idRango,
+    fechaObtenido
+  );
+
+  if (logro) {
+    usuarioLogro.logro = logro;  // Asignar el objeto logro
+  }
+
+  return usuarioLogro;
+}
+
 }

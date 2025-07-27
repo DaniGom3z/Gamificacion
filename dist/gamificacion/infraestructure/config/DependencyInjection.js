@@ -10,7 +10,9 @@ const DesbloquearLogro_1 = require("../../application/useCases/DesbloquearLogro"
 const ListarLogrosDeUsuario_1 = require("../../application/useCases/ListarLogrosDeUsuario");
 const GamificacionApplicationService_1 = require("../../application/services/GamificacionApplicationService");
 const GamificacionController_1 = require("../adapters/controllers/GamificacionController");
+const RangoRepository_1 = require("../repositories/RangoRepository");
 const client_1 = __importDefault(require("../prisma/client"));
+const ListarTodosLosLogros_1 = require("../../application/useCases/ListarTodosLosLogros");
 /**
  * Configuración de Inyección de Dependencias
  *
@@ -32,11 +34,13 @@ class DependencyInjection {
         // 2. Inicializar Repositorios
         this.logroRepository = new LogroPrismaRepository_1.LogroPrismaRepository(client_1.default);
         this.usuarioLogroRepository = new UsuarioLogroPrismaRepository_1.UsuarioLogroPrismaRepository(client_1.default);
+        this.rangoRepository = new RangoRepository_1.RangoRepository(client_1.default); // 🔼 MOVER AQUÍ
         // 3. Inicializar Casos de Uso
         this.desbloquearLogro = new DesbloquearLogro_1.DesbloquearLogro(this.logroRepository, this.usuarioLogroRepository, this.rangoRepository);
         this.listarLogrosDeUsuario = new ListarLogrosDeUsuario_1.ListarLogrosDeUsuario(this.usuarioLogroRepository);
+        this.listarTodosLosLogros = new ListarTodosLosLogros_1.ListarTodosLosLogros(this.logroRepository);
         // 4. Inicializar Servicios de Aplicación
-        this.gamificacionApplicationService = new GamificacionApplicationService_1.GamificacionApplicationService(this.desbloquearLogro, this.listarLogrosDeUsuario, this.rangoRepository);
+        this.gamificacionApplicationService = new GamificacionApplicationService_1.GamificacionApplicationService(this.desbloquearLogro, this.listarLogrosDeUsuario, this.rangoRepository, this.listarTodosLosLogros);
         // 5. Inicializar Controladores
         this.gamificacionController = new GamificacionController_1.GamificacionController(this.gamificacionApplicationService);
     }

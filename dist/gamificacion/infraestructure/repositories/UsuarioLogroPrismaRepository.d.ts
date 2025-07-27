@@ -1,9 +1,9 @@
-import { PrismaClient } from '@prisma/client';
-import { UsuarioLogro } from '../../domain/entities/UsuarioLogro';
-import { UsuarioLogroRepository } from '../../domain/repositories/UsuarioLogroRepository';
-import { UsuarioId } from '../../domain/valueObjects/UsuarioId';
-import { LogroId } from '../../domain/valueObjects/LogroId';
-import { UsuarioAggregate } from '../../domain/aggregates/UsuarioAggregate';
+import { PrismaClient } from "@prisma/client";
+import { UsuarioLogro } from "../../domain/entities/UsuarioLogro";
+import { UsuarioLogroRepository } from "../../domain/repositories/UsuarioLogroRepository";
+import { UsuarioId } from "../../domain/valueObjects/UsuarioId";
+import { LogroId } from "../../domain/valueObjects/LogroId";
+import { UsuarioAggregate } from "../../domain/aggregates/UsuarioAggregate";
 export declare class UsuarioLogroPrismaRepository implements UsuarioLogroRepository {
     private readonly prisma;
     constructor(prisma: PrismaClient);

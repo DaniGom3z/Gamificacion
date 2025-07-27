@@ -16,6 +16,7 @@ export declare class DependencyInjection {
     private usuarioLogroRepository;
     private desbloquearLogro;
     private listarLogrosDeUsuario;
+    private listarTodosLosLogros;
     private gamificacionApplicationService;
     private rangoRepository;
     private gamificacionController;

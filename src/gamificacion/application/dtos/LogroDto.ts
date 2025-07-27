@@ -16,7 +16,8 @@ export interface UsuarioLogroDto {
 export interface UsuarioGamificacionDto {
   idUsuario: number;
   idRango: number;
+  nombreRango: string;  // <--- agregas esta línea
   puntosTotales: number;
   cantidadLogros: number;
   logros: UsuarioLogroDto[];
-} 
+}

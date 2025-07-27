@@ -6,13 +6,17 @@ import {
 } from "../dtos/DesbloquearLogroDto";
 import { UsuarioGamificacionDto } from "../dtos/LogroDto";
 import { RangoRepository } from "../../infraestructure/repositories/RangoRepository";
+import { ListarTodosLosLogros } from "../useCases/ListarTodosLosLogros"; // importa el nuevo caso de uso
 
 export class GamificacionApplicationService {
   constructor(
     private readonly desbloquearLogroUseCase: DesbloquearLogro,
     private readonly listarLogrosDeUsuario: ListarLogrosDeUsuario,
-    private readonly rangoRepository: RangoRepository
+    private readonly rangoRepository: RangoRepository,
+    private readonly listarTodosLosLogros: ListarTodosLosLogros // inyecta el nuevo caso de uso
   ) {}
+
+  
 
   async desbloquearLogro(
     dto: DesbloquearLogroDto
@@ -37,40 +41,39 @@ export class GamificacionApplicationService {
     }
   }
 
-  async obtenerGamificacionUsuario(
-    usuarioId: number
-  ): Promise<UsuarioGamificacionDto> {
-    const logros = await this.listarLogrosDeUsuario.execute(usuarioId);
+ async obtenerGamificacionUsuario(
+  usuarioId: number
+): Promise<UsuarioGamificacionDto> {
+  const logros = await this.listarLogrosDeUsuario.execute(usuarioId);
 
-    const puntosTotales = logros.reduce((total, logro) => {
-      return total + (logro.logro?.puntosOtorgados || 0);
-    }, 0);
-    const rango = await this.rangoRepository.obtenerRangoPorPuntos(
-      puntosTotales
-    );
+  const puntosTotales = logros.reduce((total, logro) => {
+    return total + (logro.logro?.puntosOtorgados || 0);
+  }, 0);
 
-    console.log('Rango obtenido:', rango);
+  console.log('aqui andamos en aplication service');
+  const rango = await this.rangoRepository.obtenerRangoPorPuntos(
+    puntosTotales
+  );
 
+  console.log('Rango obtenido:', rango);
 
-    return {
-      idUsuario: usuarioId,
-      puntosTotales,
-      idRango: rango?.id ?? 0,
-      cantidadLogros: logros.length,
-      logros: logros.map((logro) => ({
-        idUsuario: logro.idUsuario,
-        idLogro: logro.idLogro,
-        fechaObtenido: logro.fechaObtenido.toISOString(),
-        logro: logro.logro
-          ? {
-              id: logro.logro.id,
-              nombre: logro.logro.nombre,
-              descripcion: logro.logro.descripcion,
-              puntosOtorgados: logro.logro.puntosOtorgados,
-              tipo: logro.logro.tipo,
-            }
-          : undefined,
-      })),
-    };
+  return {
+  idUsuario: usuarioId,
+  puntosTotales,
+  idRango: rango?.id ?? 0,
+  nombreRango: rango?.nombre ?? "", 
+  cantidadLogros: logros.length,
+  logros: logros.map((logro) => ({
+  idUsuario: logro.idUsuario,
+  idLogro: logro.idLogro,
+  nombreLogro: logro.logro?.nombre || "", // Asegúrate que accedes aquí correctamente
+    fechaObtenido: logro.fechaObtenido.toISOString(),
+   
+  })),
+};
+}
+
+ async listarLogros(): Promise<any[]> {
+    return await this.listarTodosLosLogros.execute();
   }
 }

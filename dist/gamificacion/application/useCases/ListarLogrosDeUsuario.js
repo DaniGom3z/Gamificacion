@@ -12,9 +12,15 @@ class ListarLogrosDeUsuario {
         return usuarioLogros.map(ul => ({
             idUsuario: ul.idUsuario.getValue(),
             idLogro: ul.idLogro.getValue(),
-            idRango: ul.idLogro.getValue(),
+            idRango: ul.idRango.getValue(), // Corrige esto: idRango debe venir de ul.idRango
             fechaObtenido: ul.fechaObtenido,
-            logro: undefined
+            logro: ul.logro ? {
+                id: ul.logro.id,
+                nombre: ul.logro.nombre,
+                descripcion: ul.logro.descripcion ?? '',
+                puntosOtorgados: ul.logro.puntosOtorgados,
+                tipo: ul.logro.tipo,
+            } : undefined
         }));
     }
 }

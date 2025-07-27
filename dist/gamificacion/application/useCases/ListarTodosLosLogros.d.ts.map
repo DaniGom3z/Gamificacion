@@ -1,0 +1,1 @@
+{"version":3,"file":"ListarTodosLosLogros.d.ts","sourceRoot":"","sources":["../../../../src/gamificacion/application/useCases/ListarTodosLosLogros.ts"],"names":[],"mappings":"AACA,OAAO,EAAE,eAAe,EAAE,MAAM,2CAA2C,CAAC;AAE5E,qBAAa,oBAAoB;IACnB,OAAO,CAAC,QAAQ,CAAC,SAAS;gBAAT,SAAS,EAAE,eAAe;IAEjD,OAAO;CAGd"}

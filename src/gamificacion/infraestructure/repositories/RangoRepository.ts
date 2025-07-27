@@ -5,6 +5,8 @@ export class RangoRepository {
   constructor(private readonly prisma: PrismaClient) {}
 
   async obtenerRangoPorPuntos(puntosTotales: number) {
+      console.log('aqui esta el problema');
+
     return this.prisma.rango.findFirst({
       where: {
         puntuacionMinima: {
@@ -15,5 +17,6 @@ export class RangoRepository {
         puntuacionMinima: 'desc'
       }
     });
+    
   }
 }

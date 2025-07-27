@@ -21,15 +21,22 @@ export class ListarLogrosDeUsuario {
   ) {}
 
   async execute(idUsuario: number): Promise<LogroCompleto[]> {
-    const usuarioIdVO = UsuarioId.create(idUsuario);
-    const usuarioLogros = await this.usuarioLogroRepo.findByUsuario(usuarioIdVO);
+  const usuarioIdVO = UsuarioId.create(idUsuario);
+  const usuarioLogros = await this.usuarioLogroRepo.findByUsuario(usuarioIdVO);
 
-    return usuarioLogros.map(ul => ({
-      idUsuario: ul.idUsuario.getValue(),
-      idLogro: ul.idLogro.getValue(),
-      idRango: ul.idLogro.getValue(),
-      fechaObtenido: ul.fechaObtenido,
-      logro: undefined
-    }));
-  }
+  return usuarioLogros.map(ul => ({
+    idUsuario: ul.idUsuario.getValue(),
+    idLogro: ul.idLogro.getValue(),
+    idRango: ul.idRango.getValue(), // Corrige esto: idRango debe venir de ul.idRango
+    fechaObtenido: ul.fechaObtenido,
+    logro: ul.logro ? {
+      id: ul.logro.id,
+      nombre: ul.logro.nombre,
+      descripcion: ul.logro.descripcion ?? '',
+      puntosOtorgados: ul.logro.puntosOtorgados,
+      tipo: ul.logro.tipo,
+    } : undefined
+  }));
+}
+
 }

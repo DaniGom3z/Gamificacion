@@ -16,4 +16,10 @@ router.get('/logros', (req, res) =>
   controller.listarPorUsuario(req, res)
 );
 
+
+// GET /api/gamificacion/logros
+router.get('/logro', (req, res) =>
+  controller.listarLogros(req, res)
+);
+
 export default router;

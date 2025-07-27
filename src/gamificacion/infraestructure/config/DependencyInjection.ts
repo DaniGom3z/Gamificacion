@@ -8,6 +8,7 @@ import { GamificacionApplicationService } from '../../application/services/Gamif
 import { GamificacionController } from '../adapters/controllers/GamificacionController';
 import { RangoRepository } from '../repositories/RangoRepository';
 import prisma from '../prisma/client';
+import { ListarTodosLosLogros } from "../../application/useCases/ListarTodosLosLogros";
 
 /**
  * Configuración de Inyección de Dependencias
@@ -22,10 +23,11 @@ export class DependencyInjection {
   private logroRepository!: LogroRepository;
   private usuarioLogroRepository!: UsuarioLogroRepository;
   
+  
   // Casos de uso
   private desbloquearLogro!: DesbloquearLogro;
   private listarLogrosDeUsuario!: ListarLogrosDeUsuario;
-  
+    private listarTodosLosLogros!: ListarTodosLosLogros; 
   // Servicios de aplicación
   private gamificacionApplicationService!: GamificacionApplicationService;
   
@@ -51,6 +53,7 @@ private rangoRepository!: RangoRepository;
     // 2. Inicializar Repositorios
     this.logroRepository = new LogroPrismaRepository(prisma);
     this.usuarioLogroRepository = new UsuarioLogroPrismaRepository(prisma);
+     this.rangoRepository = new RangoRepository(prisma); // 🔼 MOVER AQUÍ
 
     // 3. Inicializar Casos de Uso
     this.desbloquearLogro = new DesbloquearLogro(
@@ -62,12 +65,14 @@ private rangoRepository!: RangoRepository;
     this.listarLogrosDeUsuario = new ListarLogrosDeUsuario(
       this.usuarioLogroRepository
     );
+this.listarTodosLosLogros = new ListarTodosLosLogros(this.logroRepository);
 
     // 4. Inicializar Servicios de Aplicación
     this.gamificacionApplicationService = new GamificacionApplicationService(
       this.desbloquearLogro,
       this.listarLogrosDeUsuario,
-      this.rangoRepository
+      this.rangoRepository,
+      this.listarTodosLosLogros 
     );
 
     // 5. Inicializar Controladores

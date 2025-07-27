@@ -64,8 +64,27 @@ export class GamificacionController {
     } catch (error: any) {
       res.status(500).json({ 
         success: false,
-        error: "Error al obtener logros del usuario" 
+        error: "Error al obtener logros del usuario" ,
+        message: error.message
       });
     }
   }
+
+  // En GamificacionController
+async listarLogros(_: Request, res: Response): Promise<void> {
+  try {
+    // Aquí llamamos a un nuevo método en el servicio de aplicación
+    const logros = await this.gamificacionService.listarLogros();
+    res.status(200).json({
+      success: true,
+      data: logros,
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      error: error.message || "Error al obtener la lista de logros",
+    });
+  }
+}
+
 }

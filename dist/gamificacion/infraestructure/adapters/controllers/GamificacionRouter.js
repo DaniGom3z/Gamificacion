@@ -12,5 +12,7 @@ const controller = DependencyInjection_1.di.getGamificacionController();
 router.post('/logros/desbloquear', (req, res) => controller.desbloquear(req, res));
 // GET /api/gamificacion/logros
 router.get('/logros', (req, res) => controller.listarPorUsuario(req, res));
+// GET /api/gamificacion/logros
+router.get('/logro', (req, res) => controller.listarLogros(req, res));
 exports.default = router;
 //# sourceMappingURL=GamificacionRouter.js.map

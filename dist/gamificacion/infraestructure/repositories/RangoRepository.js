@@ -6,6 +6,7 @@ class RangoRepository {
         this.prisma = prisma;
     }
     async obtenerRangoPorPuntos(puntosTotales) {
+        console.log('aqui esta el problema');
         return this.prisma.rango.findFirst({
             where: {
                 puntuacionMinima: {

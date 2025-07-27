@@ -6,8 +6,12 @@ class UsuarioLogroFactory {
     static crearNuevo(idUsuario, idLogro, idRango = 0) {
         return UsuarioLogro_1.UsuarioLogro.create(idUsuario, idLogro, idRango, new Date());
     }
-    static reconstruir(idUsuario, idLogro, idRango, fechaObtenido) {
-        return UsuarioLogro_1.UsuarioLogro.create(idUsuario, idLogro, idRango, fechaObtenido);
+    static reconstruir(idUsuario, idLogro, idRango, fechaObtenido, logro) {
+        const usuarioLogro = UsuarioLogro_1.UsuarioLogro.create(idUsuario, idLogro, idRango, fechaObtenido);
+        if (logro) {
+            usuarioLogro.logro = logro; // Asignar el objeto logro
+        }
+        return usuarioLogro;
     }
 }
 exports.UsuarioLogroFactory = UsuarioLogroFactory;

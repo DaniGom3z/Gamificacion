@@ -7,6 +7,7 @@ import { ListarLogrosDeUsuario } from '../../application/useCases/ListarLogrosDe
 import { UsuarioLogroPrismaRepository } from '../repositories/UsuarioLogroPrismaRepository';
 import { LogroPrismaRepository } from '../repositories/LogroPrismaRepository';
 import { RangoRepository } from '../repositories/RangoRepository'; 
+import { ListarTodosLosLogros } from '../../application/useCases/ListarTodosLosLogros';
 
 // ✅ Crear instancia de PrismaClient
 const prisma = new PrismaClient();
@@ -18,12 +19,14 @@ const rangoRepository = new RangoRepository(prisma);
 // Casos de uso
 const desbloquearLogroUseCase = new DesbloquearLogro(logroRepository, usuarioLogroRepository,rangoRepository);
 const listarLogrosDeUsuario = new ListarLogrosDeUsuario(usuarioLogroRepository);
+const listarTodosLosLogros = new ListarTodosLosLogros(logroRepository);
 
 // Servicio de aplicación
 const gamificacionService = new GamificacionApplicationService(
   desbloquearLogroUseCase,
   listarLogrosDeUsuario,
-  rangoRepository
+  rangoRepository,
+  listarTodosLosLogros
 );
 
 // Función principal

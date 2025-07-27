@@ -11,7 +11,8 @@ const DesbloquearLogro_1 = require("../../application/useCases/DesbloquearLogro"
 const ListarLogrosDeUsuario_1 = require("../../application/useCases/ListarLogrosDeUsuario");
 const UsuarioLogroPrismaRepository_1 = require("../repositories/UsuarioLogroPrismaRepository");
 const LogroPrismaRepository_1 = require("../repositories/LogroPrismaRepository");
-const RangoRepository_1 = require("../repositories/RangoRepository"); // ruta correcta a tu repo
+const RangoRepository_1 = require("../repositories/RangoRepository");
+const ListarTodosLosLogros_1 = require("../../application/useCases/ListarTodosLosLogros");
 // ✅ Crear instancia de PrismaClient
 const prisma = new client_1.PrismaClient();
 // Instancias de repositorios con Prisma
@@ -21,8 +22,9 @@ const rangoRepository = new RangoRepository_1.RangoRepository(prisma);
 // Casos de uso
 const desbloquearLogroUseCase = new DesbloquearLogro_1.DesbloquearLogro(logroRepository, usuarioLogroRepository, rangoRepository);
 const listarLogrosDeUsuario = new ListarLogrosDeUsuario_1.ListarLogrosDeUsuario(usuarioLogroRepository);
+const listarTodosLosLogros = new ListarTodosLosLogros_1.ListarTodosLosLogros(logroRepository);
 // Servicio de aplicación
-const gamificacionService = new GamificacionApplicationService_1.GamificacionApplicationService(desbloquearLogroUseCase, listarLogrosDeUsuario, rangoRepository);
+const gamificacionService = new GamificacionApplicationService_1.GamificacionApplicationService(desbloquearLogroUseCase, listarLogrosDeUsuario, rangoRepository, listarTodosLosLogros);
 // Función principal
 async function iniciarConsumidorLogros() {
     const conn = await amqplib_1.default.connect(process.env.RABBITMQ_URL || 'amqp://localhost');
