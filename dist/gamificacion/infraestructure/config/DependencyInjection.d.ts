@@ -4,7 +4,6 @@ import { DesbloquearLogro } from '../../application/useCases/DesbloquearLogro';
 import { ListarLogrosDeUsuario } from '../../application/useCases/ListarLogrosDeUsuario';
 import { GamificacionApplicationService } from '../../application/services/GamificacionApplicationService';
 import { GamificacionController } from '../adapters/controllers/GamificacionController';
-import { EventBus } from '../../application/events/EventBus';
 /**
  * Configuración de Inyección de Dependencias
  *
@@ -18,7 +17,7 @@ export declare class DependencyInjection {
     private desbloquearLogro;
     private listarLogrosDeUsuario;
     private gamificacionApplicationService;
-    private eventBus;
+    private rangoRepository;
     private gamificacionController;
     private constructor();
     static getInstance(): DependencyInjection;
@@ -28,12 +27,7 @@ export declare class DependencyInjection {
     getDesbloquearLogro(): DesbloquearLogro;
     getListarLogrosDeUsuario(): ListarLogrosDeUsuario;
     getGamificacionApplicationService(): GamificacionApplicationService;
-    getEventBus(): EventBus;
     getGamificacionController(): GamificacionController;
-    /**
-     * Método para registrar event handlers
-     */
-    registerEventHandler(eventName: string, handler: any): void;
     /**
      * Método para limpiar todas las dependencias (útil para tests)
      */

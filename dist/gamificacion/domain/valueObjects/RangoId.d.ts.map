@@ -1,0 +1,1 @@
+{"version":3,"file":"RangoId.d.ts","sourceRoot":"","sources":["../../../../src/gamificacion/domain/valueObjects/RangoId.ts"],"names":[],"mappings":"AAAA,qBAAa,OAAO;IACI,OAAO,CAAC,QAAQ,CAAC,KAAK;IAA1C,OAAO;IAEP,MAAM,CAAC,MAAM,CAAC,KAAK,EAAE,MAAM,GAAG,OAAO;IAOrC,QAAQ,IAAI,MAAM;IAIlB,MAAM,CAAC,KAAK,EAAE,OAAO,GAAG,OAAO;IAI/B,QAAQ,IAAI,MAAM;CAGrB"}

@@ -6,8 +6,7 @@ import { DesbloquearLogro } from '../../application/useCases/DesbloquearLogro';
 import { ListarLogrosDeUsuario } from '../../application/useCases/ListarLogrosDeUsuario';
 import { GamificacionApplicationService } from '../../application/services/GamificacionApplicationService';
 import { GamificacionController } from '../adapters/controllers/GamificacionController';
-import { EventBus } from '../../application/events/EventBus';
-import { InMemoryEventBus } from '../events/InMemoryEventBus';
+import { RangoRepository } from '../repositories/RangoRepository';
 import prisma from '../prisma/client';
 
 /**
@@ -30,8 +29,7 @@ export class DependencyInjection {
   // Servicios de aplicación
   private gamificacionApplicationService!: GamificacionApplicationService;
   
-  // Event Bus
-  private eventBus!: EventBus;
+private rangoRepository!: RangoRepository;
   
   // Controladores
   private gamificacionController!: GamificacionController;
@@ -49,7 +47,6 @@ export class DependencyInjection {
 
   private initializeDependencies(): void {
     // 1. Inicializar Event Bus
-    this.eventBus = new InMemoryEventBus();
 
     // 2. Inicializar Repositorios
     this.logroRepository = new LogroPrismaRepository(prisma);
@@ -58,7 +55,8 @@ export class DependencyInjection {
     // 3. Inicializar Casos de Uso
     this.desbloquearLogro = new DesbloquearLogro(
       this.logroRepository,
-      this.usuarioLogroRepository
+      this.usuarioLogroRepository,
+      this.rangoRepository
     );
 
     this.listarLogrosDeUsuario = new ListarLogrosDeUsuario(
@@ -69,7 +67,7 @@ export class DependencyInjection {
     this.gamificacionApplicationService = new GamificacionApplicationService(
       this.desbloquearLogro,
       this.listarLogrosDeUsuario,
-      this.eventBus
+      this.rangoRepository
     );
 
     // 5. Inicializar Controladores
@@ -99,20 +97,11 @@ export class DependencyInjection {
     return this.gamificacionApplicationService;
   }
 
-  getEventBus(): EventBus {
-    return this.eventBus;
-  }
 
   getGamificacionController(): GamificacionController {
     return this.gamificacionController;
   }
 
-  /**
-   * Método para registrar event handlers
-   */
-  registerEventHandler(eventName: string, handler: any): void {
-    this.eventBus.subscribe(eventName, handler);
-  }
 
   /**
    * Método para limpiar todas las dependencias (útil para tests)

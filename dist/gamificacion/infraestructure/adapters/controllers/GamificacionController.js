@@ -18,7 +18,7 @@ class GamificacionController {
                 return;
             }
             const dto = {
-                usuarioId: idUsuario,
+                idUsuario: idUsuario,
                 logroId: idLogro
             };
             const resultado = await this.gamificacionService.desbloquearLogro(dto);

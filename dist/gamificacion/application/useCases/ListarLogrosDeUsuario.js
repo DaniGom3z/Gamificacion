@@ -9,13 +9,12 @@ class ListarLogrosDeUsuario {
     async execute(idUsuario) {
         const usuarioIdVO = UsuarioId_1.UsuarioId.create(idUsuario);
         const usuarioLogros = await this.usuarioLogroRepo.findByUsuario(usuarioIdVO);
-        // Por ahora retornamos la información básica
-        // En una implementación completa, aquí se cargarían los datos del logro
         return usuarioLogros.map(ul => ({
             idUsuario: ul.idUsuario.getValue(),
             idLogro: ul.idLogro.getValue(),
+            idRango: ul.idLogro.getValue(),
             fechaObtenido: ul.fechaObtenido,
-            logro: undefined // Se cargaría desde el repositorio de logros
+            logro: undefined
         }));
     }
 }

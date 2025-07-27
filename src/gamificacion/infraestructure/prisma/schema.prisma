@@ -16,26 +16,27 @@ model Logro {
 
   usuarios        UsuarioLogro[]
 }
-
-model UsuarioLogro {
-  idUsuario      Int              
-  idLogro        Int
-  fechaObtenido  DateTime         @default(now())
-  createdAt      DateTime         @default(now())
-  updatedAt      DateTime         @updatedAt
-
-  logro          Logro            @relation(fields: [idLogro], references: [id], onDelete: Cascade)
-
-  @@id([idUsuario, idLogro])
-}
-
-
 model Rango {
   id               Int      @id @default(autoincrement())
   nombre           String
   descripcion      String
   puntuacionMinima Int
   orden            Int      @unique
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
+  usuarioLogros    UsuarioLogro[]
 }
+model UsuarioLogro {
+  idUsuario      Int              
+  idLogro        Int
+  idRango        Int?             // <- nuevo campo
+  fechaObtenido  DateTime         @default(now())
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+
+  logro          Logro            @relation(fields: [idLogro], references: [id], onDelete: Cascade)
+  rango          Rango?           @relation(fields: [idRango], references: [id])
+
+  @@id([idUsuario, idLogro])
+}
+
+
+

@@ -2,6 +2,7 @@ import { UsuarioLogroRepository } from '../../domain/repositories/UsuarioLogroRe
 export interface LogroCompleto {
     idUsuario: number;
     idLogro: number;
+    idRango: number;
     fechaObtenido: Date;
     logro?: {
         id: number;

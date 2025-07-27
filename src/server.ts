@@ -6,10 +6,13 @@ import cors from 'cors';
 import  prisma  from './gamificacion/infraestructure/prisma/client';
 import gamificacionRouter from './gamificacion/infraestructure/adapters/controllers/GamificacionRouter';
 import { jwtMiddleware } from './gamificacion/infraestructure/http/middleware/jwtMiddleware';
+import { iniciarConsumidorLogros } from './gamificacion/infraestructure/consumers/logroConsumer';
+
 
 // Inicializar Express
 const app = express();
 const port = process.env.PORT || 3000;
+iniciarConsumidorLogros().catch(console.error);
 
 // Middlewares
 app.use(express.json());

@@ -11,9 +11,11 @@ const cors_1 = __importDefault(require("cors"));
 const client_1 = __importDefault(require("./gamificacion/infraestructure/prisma/client"));
 const GamificacionRouter_1 = __importDefault(require("./gamificacion/infraestructure/adapters/controllers/GamificacionRouter"));
 const jwtMiddleware_1 = require("./gamificacion/infraestructure/http/middleware/jwtMiddleware");
+const logroConsumer_1 = require("./gamificacion/infraestructure/consumers/logroConsumer");
 // Inicializar Express
 const app = (0, express_1.default)();
 const port = process.env.PORT || 3000;
+(0, logroConsumer_1.iniciarConsumidorLogros)().catch(console.error);
 // Middlewares
 app.use(express_1.default.json());
 app.use((0, cors_1.default)());

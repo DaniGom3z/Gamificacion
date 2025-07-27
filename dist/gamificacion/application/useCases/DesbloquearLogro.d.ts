@@ -1,5 +1,6 @@
-import { LogroRepository } from '../../domain/repositories/LogroRepository';
-import { UsuarioLogroRepository } from '../../domain/repositories/UsuarioLogroRepository';
+import { LogroRepository } from "../../domain/repositories/LogroRepository";
+import { UsuarioLogroRepository } from "../../domain/repositories/UsuarioLogroRepository";
+import { RangoRepository } from "../../infraestructure/repositories/RangoRepository";
 export interface DesbloquearLogroResult {
     success: boolean;
     puntosOtorgados: number;
@@ -9,7 +10,8 @@ export interface DesbloquearLogroResult {
 export declare class DesbloquearLogro {
     private readonly logroRepo;
     private readonly usuarioLogroRepo;
-    constructor(logroRepo: LogroRepository, usuarioLogroRepo: UsuarioLogroRepository);
+    private readonly rangoRepository;
+    constructor(logroRepo: LogroRepository, usuarioLogroRepo: UsuarioLogroRepository, rangoRepository: RangoRepository);
     execute(usuarioId: number, logroId: number): Promise<DesbloquearLogroResult>;
 }
 //# sourceMappingURL=DesbloquearLogro.d.ts.map

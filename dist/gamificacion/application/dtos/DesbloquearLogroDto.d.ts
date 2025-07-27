@@ -1,5 +1,5 @@
 export interface DesbloquearLogroDto {
-    usuarioId: number;
+    idUsuario: number;
     logroId: number;
 }
 export interface DesbloquearLogroResponseDto {

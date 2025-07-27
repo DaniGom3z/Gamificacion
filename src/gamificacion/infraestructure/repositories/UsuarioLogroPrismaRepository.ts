@@ -14,6 +14,7 @@ export class UsuarioLogroPrismaRepository implements UsuarioLogroRepository {
       data: {
         idUsuario: usuarioLogro.idUsuario.getValue(),
         idLogro: usuarioLogro.idLogro.getValue(),
+        idRango: usuarioLogro.idRango.getValue(), 
         fechaObtenido: usuarioLogro.fechaObtenido,
       },
     });
@@ -28,6 +29,7 @@ export class UsuarioLogroPrismaRepository implements UsuarioLogroRepository {
       UsuarioLogroFactory.reconstruir(
         ul.idUsuario,
         ul.idLogro,
+        ul.idRango || 0, 
         ul.fechaObtenido
       )
     );
@@ -45,14 +47,19 @@ export class UsuarioLogroPrismaRepository implements UsuarioLogroRepository {
   }
 
   async findUsuarioAggregate(_idUsuario: UsuarioId): Promise<UsuarioAggregate | null> {
-    // Por ahora retornamos null, en una implementación completa
-    // aquí se cargarían los datos del usuario desde la base de datos
+
     return null;
   }
 
   async saveUsuarioAggregate(usuarioAggregate: UsuarioAggregate): Promise<void> {
-    // Por ahora no hacemos nada, en una implementación completa
-    // aquí se guardarían los datos del aggregate en la base de datos
-    console.log('Guardando aggregate del usuario:', usuarioAggregate.id.getValue());
+  console.log('Guardando aggregate del usuario:', usuarioAggregate.id.getValue());
+
+  for (const logro of usuarioAggregate.logrosObtenidos) {
+    const existe = await this.exists(logro.idUsuario, logro.idLogro);
+    if (!existe) {
+      await this.save(logro);
+    }
   }
+}
+
 }

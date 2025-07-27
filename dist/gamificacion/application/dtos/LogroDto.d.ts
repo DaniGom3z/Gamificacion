@@ -13,6 +13,7 @@ export interface UsuarioLogroDto {
 }
 export interface UsuarioGamificacionDto {
     idUsuario: number;
+    idRango: number;
     puntosTotales: number;
     cantidadLogros: number;
     logros: UsuarioLogroDto[];

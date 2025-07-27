@@ -7,6 +7,8 @@ export class GamificacionController {
     private readonly gamificacionService: GamificacionApplicationService
   ) {}
 
+  
+
   // POST /api/gamificacion/logros/desbloquear
   async desbloquear(req: Request, res: Response): Promise<void> {
     try {
@@ -22,7 +24,7 @@ export class GamificacionController {
       }
 
       const dto: DesbloquearLogroDto = {
-        usuarioId: idUsuario,
+        idUsuario: idUsuario,
         logroId: idLogro
       };
 

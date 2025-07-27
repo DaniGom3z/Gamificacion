@@ -11,6 +11,7 @@ class UsuarioLogroPrismaRepository {
             data: {
                 idUsuario: usuarioLogro.idUsuario.getValue(),
                 idLogro: usuarioLogro.idLogro.getValue(),
+                idRango: usuarioLogro.idRango.getValue(),
                 fechaObtenido: usuarioLogro.fechaObtenido,
             },
         });
@@ -19,7 +20,7 @@ class UsuarioLogroPrismaRepository {
         const dbResults = await this.prisma.usuarioLogro.findMany({
             where: { idUsuario: idUsuario.getValue() },
         });
-        return dbResults.map((ul) => UsuarioLogroFactory_1.UsuarioLogroFactory.reconstruir(ul.idUsuario, ul.idLogro, ul.fechaObtenido));
+        return dbResults.map((ul) => UsuarioLogroFactory_1.UsuarioLogroFactory.reconstruir(ul.idUsuario, ul.idLogro, ul.idRango || 0, ul.fechaObtenido));
     }
     async exists(idUsuario, idLogro) {
         const count = await this.prisma.usuarioLogro.count({
@@ -36,9 +37,13 @@ class UsuarioLogroPrismaRepository {
         return null;
     }
     async saveUsuarioAggregate(usuarioAggregate) {
-        // Por ahora no hacemos nada, en una implementación completa
-        // aquí se guardarían los datos del aggregate en la base de datos
         console.log('Guardando aggregate del usuario:', usuarioAggregate.id.getValue());
+        for (const logro of usuarioAggregate.logrosObtenidos) {
+            const existe = await this.exists(logro.idUsuario, logro.idLogro);
+            if (!existe) {
+                await this.save(logro);
+            }
+        }
     }
 }
 exports.UsuarioLogroPrismaRepository = UsuarioLogroPrismaRepository;

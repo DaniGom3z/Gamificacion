@@ -1,26 +1,29 @@
-import { UsuarioId } from '../valueObjects/UsuarioId';
-import { Puntos } from '../valueObjects/Puntos';
-import { LogroId } from '../valueObjects/LogroId';
-import { UsuarioLogro } from '../entities/UsuarioLogro';
-import { LogroDesbloqueadoEvent } from '../events/LogroDesbloqueadoEvent';
-import { DomainEvent } from '../events/DomainEvent';
+import { UsuarioId } from "../valueObjects/UsuarioId";
+import { Puntos } from "../valueObjects/Puntos";
+import { LogroId } from "../valueObjects/LogroId";
+import { UsuarioLogro } from "../entities/UsuarioLogro";
+import { LogroDesbloqueadoEvent } from "../events/LogroDesbloqueadoEvent";
+import { DomainEvent } from "../events/DomainEvent";
 
 export class UsuarioAggregate {
   private readonly _domainEvents: DomainEvent[] = [];
-  
+  private readonly _logrosObtenidos: UsuarioLogro[] = [];
+
   constructor(
     private readonly _id: UsuarioId,
     private _puntos: Puntos,
-    private readonly _logrosObtenidos: UsuarioLogro[] = []
-  ) {}
+    logrosObtenidos: UsuarioLogro[] = []
+  ) {
+    this._logrosObtenidos = [...logrosObtenidos];
+  }
 
   static create(id: UsuarioId): UsuarioAggregate {
     return new UsuarioAggregate(id, Puntos.create(0), []);
   }
 
   static reconstitute(
-    id: UsuarioId, 
-    puntos: Puntos, 
+    id: UsuarioId,
+    puntos: Puntos,
     logrosObtenidos: UsuarioLogro[]
   ): UsuarioAggregate {
     return new UsuarioAggregate(id, puntos, logrosObtenidos);
@@ -47,28 +50,26 @@ export class UsuarioAggregate {
   }
 
   tieneLogro(logroId: LogroId): boolean {
-    return this._logrosObtenidos.some(ul => ul.idLogro.getValue() === logroId.getValue());
+    return this._logrosObtenidos.some(
+      (ul) => ul.idLogro.getValue() === logroId.getValue()
+    );
   }
 
-  desbloquearLogro(logroId: LogroId, puntosLogro: Puntos): void {
+  desbloquearLogro(logroId: LogroId, puntosLogro: Puntos, idRango: number): void {
     if (this.tieneLogro(logroId)) {
       throw new Error(`El usuario ya tiene el logro ${logroId.getValue()}`);
     }
 
-    // Crear el nuevo logro del usuario
     const usuarioLogro = UsuarioLogro.create(
       this._id.getValue(),
       logroId.getValue(),
+      idRango,
       new Date()
     );
 
-    // Añadir a la lista de logros obtenidos
     this._logrosObtenidos.push(usuarioLogro);
-
-    // Sumar puntos
     this._puntos = this._puntos.add(puntosLogro);
 
-    // Publicar evento de dominio
     const evento = new LogroDesbloqueadoEvent(
       this._id.getValue(),
       logroId.getValue(),
@@ -86,11 +87,7 @@ export class UsuarioAggregate {
   }
 
   obtenerLogrosPorTipo(_tipo: string): UsuarioLogro[] {
-    // Nota: Esto requeriría que UsuarioLogro tenga acceso al Logro completo
-    // o que se implemente de manera diferente
-    return this._logrosObtenidos.filter(_ul => {
-      // Por ahora retornamos todos, pero esto debería filtrar por tipo
-      return true;
-    });
+    // TODO: Implementar filtrado real por tipo si se puede acceder al tipo del logro.
+    return [...this._logrosObtenidos]; // Por ahora, regresamos todos
   }
-} 
+}
